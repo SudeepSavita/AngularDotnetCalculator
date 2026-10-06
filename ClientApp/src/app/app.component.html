@@ -1,0 +1,276 @@
+<!-- ── Top Navbar ───────────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+    Scientific Calculator
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn" (click)="openModal('flow')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Flow
+    </button>
+    <button class="nav-btn" (click)="openModal('tech')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      Tech
+    </button>
+    <button class="nav-btn" (click)="openModal('help')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      User Guide
+    </button>
+    <a class="nav-link-ext" href="http://sudeepsavita32.bsite.net" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+     Help
+    </a>
+  </div>
+</nav>
+
+<!-- ── Calculator ────────────────────────────────── -->
+<app-calculator></app-calculator>
+
+<!-- ── Modal Overlay ────────────────────────────── -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <!-- Modal Tabs -->
+    <div class="modal-tabs">
+      <button class="tab-btn" [class.active]="activeTab==='flow'" (click)="activeTab='flow'">📋 Project Flow</button>
+      <button class="tab-btn" [class.active]="activeTab==='tech'" (click)="activeTab='tech'">⚙️ Technologies</button>
+      <button class="tab-btn" [class.active]="activeTab==='help'" (click)="activeTab='help'">📖 User Guide</button>
+      <button class="modal-close" (click)="closeModal()">✕</button>
+    </div>
+
+    <!-- ════════════════════════════════
+         TAB 1 — PROJECT FLOW
+    ════════════════════════════════ -->
+    <div class="modal-body" *ngIf="activeTab==='flow'">
+      <div class="section-header">
+        <h2>📋 Project Flow — How It Works</h2>
+        <p class="section-sub">This project is a full-stack Scientific Calculator web application. Below is a complete step-by-step explanation of how the application works from the moment a user presses a button to the moment the result appears on the screen.</p>
+      </div>
+
+      <div class="flow-steps">
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-info">
+            <strong>User Interaction — Angular Frontend (UI Layer)</strong>
+            <p>The user opens the application in a web browser at <code>http://localhost:5000</code>. The interface shows a mobile phone-style calculator rendered entirely in the browser using <strong>Angular 17</strong>. When the user presses any button (number, operator, or function), the Angular component immediately updates the expression shown in the display area. This happens <em>instantly in real time</em> — no page reload is required. The user can also type directly using the keyboard (numbers, +, -, *, /, Enter, Backspace, Escape).</p>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-info">
+            <strong>Input Validation — Frontend Guard (TypeScript Logic)</strong>
+            <p>Before the expression is sent to the server, the Angular component runs a series of <strong>validation checks</strong> in TypeScript to catch obvious errors immediately without wasting a network call. These checks include: (a) Balanced parentheses — every opening <code>(</code> must have a matching closing <code>)</code>. (b) No empty parentheses like <code>()</code>. (c) No operator at the very start (e.g. <code>+5</code> is invalid). (d) No operator at the end (e.g. <code>5+</code> is invalid). (e) No consecutive operators (e.g. <code>5++3</code> — the second operator automatically replaces the first). (f) No double factorial <code>!!</code>. (g) No deeply nested parentheses beyond 10 levels. (h) No excessively long power chains like <code>^2^2^2^2^2</code>. If any check fails, a red <code>Format Error</code> message is shown in the display with a shake animation — <strong>no server call is made</strong>.</p>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-info">
+            <strong>HTTP API Call — Angular HttpClient to ASP.NET Core</strong>
+            <p>If the expression passes all frontend validations, Angular sends an <strong>HTTP POST request</strong> to the backend API endpoint <code>/api/calculator/evaluate</code>. The request body is a JSON object containing two fields: <code>expression</code> (the mathematical string entered by the user) and <code>isDegrees</code> (a boolean flag indicating whether trigonometric functions should use degrees or radians). This communication follows the <strong>REST API</strong> standard using JSON format. The Angular <code>HttpClient</code> service handles this asynchronously — the UI remains fully responsive while waiting for the response.</p>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-info">
+            <strong>Backend Reception — ASP.NET Core Web API Controller</strong>
+            <p>The <strong>ASP.NET Core 8</strong> server receives the HTTP POST request in the <code>CalculatorController.cs</code> file. The controller's <code>Evaluate</code> action method deserializes the JSON body into a C# record <code>EvaluateRequest</code>. The controller is decorated with <code>[ApiController]</code> and <code>[Route("api/[controller]")]</code> attributes which handle routing automatically. The entire request is wrapped in a try-catch block so that any unexpected mathematical or parsing error is caught gracefully and returned as a structured JSON error response instead of crashing the server.</p>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-info">
+            <strong>Expression Pre-Processing — C# Math Engine</strong>
+            <p>The raw expression string goes through a multi-stage pre-processing pipeline written in <strong>C#</strong>: (a) <strong>Constants</strong> — <code>pi</code> and <code>π</code> are replaced with <code>3.14159265358979...</code>, and standalone <code>e</code> is replaced with <code>2.71828182845904...</code>. (b) <strong>Factorial</strong> — patterns like <code>5!</code> are detected using Regex and computed directly (supports 0! to 20!). (c) <strong>Trigonometric functions</strong> — <code>sin(</code>, <code>cos(</code>, <code>tan(</code> are found using recursive string scanning, their inner expressions are evaluated first, and the result replaces the function call. If <code>isDegrees</code> is true, angles are converted from degrees to radians before calling <code>Math.Sin/Cos/Tan</code>. (d) <strong>Logarithms</strong> — <code>log(</code> calls <code>Math.Log10</code> and <code>ln(</code> calls <code>Math.Log</code>. (e) <strong>Square root</strong> — <code>sqrt(</code> calls <code>Math.Sqrt</code>. Negative inputs throw an exception. (f) <strong>Power operator</strong> — <code>^</code> is replaced by evaluating <code>Math.Pow(base, exponent)</code> using Regex pattern matching. Exponents above 300 are rejected to prevent overflow.</p>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-info">
+            <strong>Final Evaluation — DataTable.Compute()</strong>
+            <p>After all functions and constants are resolved, the expression is reduced to a pure arithmetic string containing only numbers and basic operators (+, -, *, /). This is then evaluated using <strong>System.Data.DataTable.Compute()</strong> — a built-in .NET method that safely evaluates arithmetic expressions without using <code>eval()</code> or any script engine. This approach is secure and handles operator precedence (BODMAS/PEMDAS) correctly. The result is then validated: if it is <code>NaN</code>, <code>Infinity</code>, or larger than 10⁹⁹, it is treated as an error.</p>
+          </div>
+        </div>
+        <div class="step-arrow">↓</div>
+
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-info">
+            <strong>Response & Display — Result Back to Angular</strong>
+            <p>The backend returns a JSON response: <code>&#123; "result": "42", "error": null &#125;</code> for success, or <code>&#123; "result": null, "error": "Format Error" &#125;</code> for failure. Angular's <code>HttpClient</code> receives this response. If successful, the result is displayed in the <strong>result line</strong> of the calculator display in purple. The expression moves to the smaller top line as history. If there is an error, <code>Format Error</code> is shown in red with a shake animation. The user can then continue by pressing more buttons — the expression remains editable.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         TAB 2 — TECHNOLOGIES
+    ════════════════════════════════ -->
+    <div class="modal-body" *ngIf="activeTab==='tech'">
+      <div class="section-header">
+        <h2>⚙️ Technologies Used</h2>
+        <p class="section-sub">This project uses a modern full-stack architecture combining a JavaScript frontend framework with a .NET backend. No CSS framework was used — all styling is hand-written custom CSS.</p>
+      </div>
+
+      <div class="tech-section-title">🖥️ Frontend</div>
+      <div class="tech-list">
+        <div class="tech-row frontend">
+          <div class="tech-badge">🅰️ Angular 17</div>
+          <p>Angular is a TypeScript-based open-source web application framework developed by Google. In this project, Angular 17 is used with <strong>standalone components</strong> — meaning no NgModule is required. The <code>CalculatorComponent</code> handles all UI rendering, button interactions, expression building, and validation. The <code>AppComponent</code> hosts the navbar and modal. Angular's <strong>two-way data binding</strong> and <strong>interpolation</strong> (double curly braces with variable name) ensure the display updates in real time as the user types.</p>
+        </div>
+        <div class="tech-row frontend">
+          <div class="tech-badge">📘 TypeScript</div>
+          <p>TypeScript is a strongly-typed superset of JavaScript. It adds compile-time type checking which prevents runtime errors. In this project, TypeScript is used for all component logic: the <code>press()</code>, <code>calculate()</code>, <code>validate()</code>, and <code>backspace()</code> methods are all written in TypeScript. The <code>CalcResponse</code> interface defines the exact shape of the API response, ensuring type safety when handling the result.</p>
+        </div>
+        <div class="tech-row frontend">
+          <div class="tech-badge">🎨 Custom CSS3</div>
+          <p>All visual styling is written entirely in <strong>hand-crafted CSS3</strong> — no Bootstrap, no Tailwind, no UI library. The design features a <strong>pastel light theme</strong> for the phone frame and screen, a <strong>warm white display area</strong>, <strong>glassmorphism effects</strong> (backdrop-filter: blur), <strong>CSS gradients</strong> for buttons, <strong>CSS animations</strong> (shake effect for errors), <strong>CSS Grid</strong> for button layout, and <strong>CSS custom properties</strong> for consistent theming. The design is fully responsive and works on mobile screens as well.</p>
+        </div>
+        <div class="tech-row frontend">
+          <div class="tech-badge">📡 Angular HttpClient</div>
+          <p>Angular's built-in <code>HttpClient</code> module is used to make HTTP requests to the ASP.NET Core API. The <code>http.post()</code> method sends the expression asynchronously and the <code>.subscribe()</code> callback handles both success and error responses. This follows the <strong>Observer pattern</strong> using RxJS Observables, which is Angular's recommended approach for handling asynchronous HTTP communication.</p>
+        </div>
+      </div>
+
+      <div class="tech-section-title">🖧 Backend</div>
+      <div class="tech-list">
+        <div class="tech-row backend">
+          <div class="tech-badge">⚡ ASP.NET Core 8</div>
+          <p>ASP.NET Core is Microsoft's high-performance, cross-platform web framework for building modern web APIs. In this project, it serves two purposes: (1) It hosts the <strong>REST API</strong> at <code>/api/calculator/evaluate</code> which processes mathematical expressions. (2) It serves the <strong>Angular static files</strong> (HTML, JS, CSS) from the <code>wwwroot/</code> folder and falls back to <code>index.html</code> for all routes so Angular's client-side routing works correctly. <strong>CORS</strong> is also configured to allow the Angular dev server (localhost:4200) to communicate with the API during development.</p>
+        </div>
+        <div class="tech-row backend">
+          <div class="tech-badge">🔷 C# 12</div>
+          <p>C# is Microsoft's modern, object-oriented programming language. The backend logic is written entirely in C#. Key features used include: <strong>Record types</strong> (<code>EvaluateRequest</code>) for clean data models, <strong>Pattern matching</strong> and <strong>Regular Expressions</strong> (System.Text.RegularExpressions) for parsing mathematical expressions, <strong>Lambda expressions</strong> for passing math functions as parameters, and <strong>Exception handling</strong> (try-catch) for graceful error responses. The <code>Math</code> class provides all scientific functions.</p>
+        </div>
+        <div class="tech-row backend">
+          <div class="tech-badge">📦 .NET 8</div>
+          <p>.NET 8 is the latest Long-Term Support (LTS) version of Microsoft's development platform. It provides the runtime environment, base class libraries (including <code>System.Data.DataTable</code> used for expression evaluation), and the hosting infrastructure for the web server. The project targets <code>net8.0</code> and uses the minimal hosting model with <code>WebApplication.CreateBuilder()</code>.</p>
+        </div>
+        <div class="tech-row backend">
+          <div class="tech-badge">🗃️ DataTable.Compute()</div>
+          <p><code>System.Data.DataTable.Compute(expression, filter)</code> is a .NET built-in method originally designed for filtering DataTable rows. However, it also functions as a safe arithmetic expression evaluator. It correctly handles operator precedence (BODMAS), parentheses, and all four basic operators. It is used here as a secure alternative to <code>eval()</code> — it cannot execute arbitrary code, only evaluate pure mathematical arithmetic.</p>
+        </div>
+      </div>
+
+      <div class="tech-section-title">🏗️ Architecture</div>
+      <div class="arch-box">
+        <div class="arch-layer frontend-layer">
+          <strong>Frontend (Browser)</strong>
+          Angular 17 + TypeScript + Custom CSS
+        </div>
+        <div class="arch-arrow">⬇ HTTP POST /api/calculator/evaluate (JSON)</div>
+        <div class="arch-layer backend-layer">
+          <strong>Backend (Server)</strong>
+          ASP.NET Core 8 + C# 12 + .NET 8
+        </div>
+        <div class="arch-arrow">⬇ Serves static files</div>
+        <div class="arch-layer static-layer">
+          <strong>Static Files (wwwroot/)</strong>
+          Angular build output: index.html, main.js, styles.css
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         TAB 3 — USER GUIDE
+    ════════════════════════════════ -->
+    <div class="modal-body" *ngIf="activeTab==='help'">
+      <div class="section-header">
+        <h2>📖 Complete User Guide</h2>
+        <p class="section-sub">This guide explains every button and feature of the Scientific Calculator in detail. Read this to understand how to use every function correctly.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">🖥️ Display Area</div>
+        <p>The calculator display has <strong>two lines</strong>. The <strong>top line</strong> (smaller, grey text) shows the expression you are currently building — for example <code>sin(45)+sqrt(16)</code>. The <strong>bottom line</strong> (larger, purple text) shows the result after you press <code>=</code>. If there is a <strong>Format Error</strong>, it appears in red on the bottom line and shakes to alert you. The display always shows <code>0</code> when empty.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">🔢 Number Buttons (0–9) and Decimal Point (.)</div>
+        <p>Press any number button to add digits to your expression. Press <code>.</code> to add a decimal point. The calculator prevents entering two decimal points in the same number (e.g. <code>3..14</code> is blocked). After pressing <code>=</code> and getting a result, if you press a number, a fresh expression starts. If you press an operator after <code>=</code>, the calculation continues from the result.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">➕ ➖ ✖️ ➗ Arithmetic Operators</div>
+        <p>The four basic operators are: <code>+</code> (add), <code>−</code> (subtract), <code>×</code> (multiply shown as *, sent to API), <code>÷</code> (divide shown as ÷, sent as /). If you press two operators in a row (e.g. press <code>+</code> then <code>−</code>), the second one automatically <strong>replaces</strong> the first — you will see <code>5−</code> not <code>5+−</code>. This prevents invalid expressions.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">📐 Trigonometric Functions — sin, cos, tan</div>
+        <p><strong>sin</strong> calculates the sine of an angle. <strong>cos</strong> calculates the cosine. <strong>tan</strong> calculates the tangent. By default, angles are in <strong>degrees</strong>. Example: Press <code>sin(</code> → type <code>30</code> → press <code>)</code> → press <code>=</code> → result is <code>0.5</code>. Note: <code>tan(90)</code> is undefined (infinity) and will show Format Error.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">📊 Logarithm Functions — log and ln</div>
+        <p><strong>log</strong> computes the base-10 logarithm. Example: <code>log(100)</code> = <code>2</code>. <strong>ln</strong> computes the natural logarithm (base e). Example: <code>ln(e)</code> = <code>1</code>. Both functions require a <strong>positive number</strong> inside the parentheses. Entering <code>log(-5)</code> or <code>log(0)</code> will show Format Error.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">√ Square Root</div>
+        <p>Press <code>√</code> to open a square root function. Type the number inside, then close with <code>)</code> and press <code>=</code>. Example: <code>sqrt(144)</code> = <code>12</code>. You can nest it: <code>sqrt(2+14)</code> = <code>4</code>. Negative numbers inside sqrt will show Format Error.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">x² and xʸ — Power Functions</div>
+        <p><code>x²</code> appends <code>^2</code> to square the current number. Example: type <code>9</code> → press <code>x²</code> → expression becomes <code>9^2</code> → press <code>=</code> → result is <code>81</code>. <code>xʸ</code> appends <code>^</code> so you can type your own exponent. Example: <code>2^10</code> = <code>1024</code>. Exponents above 300 are blocked to prevent overflow.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">π and e — Mathematical Constants</div>
+        <p><code>π</code> inserts the value of Pi (3.14159265358979...). Example: <code>2*pi</code> gives the circumference ratio. <code>e</code> inserts Euler's number (2.71828182845904...). Example: <code>ln(e)</code> = <code>1</code>. These constants are replaced with their full numeric values before evaluation.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">n! — Factorial</div>
+        <p>Press a number then <code>n!</code> to compute its factorial. Example: <code>5!</code> = <code>120</code> (because 5×4×3×2×1=120). Maximum supported value is <code>20!</code> = <code>2,432,902,008,176,640,000</code>. Factorial of negative or decimal numbers shows Format Error. You cannot press <code>!</code> twice in a row or after an operator.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">( ) — Parentheses / Grouping</div>
+        <p>Use parentheses to group parts of an expression and control calculation order. Example: <code>(2+3)*4</code> = <code>20</code>, but <code>2+3*4</code> = <code>14</code> (multiplication first by BODMAS). The calculator prevents closing a parenthesis if there is no matching open parenthesis. Nested parentheses up to 10 levels deep are supported.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">AC — All Clear</div>
+        <p>Pressing <code>AC</code> (All Clear) <strong>completely resets</strong> the calculator — the expression is cleared, the result is cleared, and the display returns to <code>0</code>. Use this whenever you want to start a brand new calculation from scratch.</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">⌫ — Backspace / Delete</div>
+        <p>Pressing <code>⌫</code> removes the <strong>last character</strong> from the expression. This is useful if you pressed a wrong button. If you have just seen a result (after pressing <code>=</code>), pressing backspace clears everything (same as AC in that state).</p>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">⌨️ Keyboard Shortcuts</div>
+        <div class="shortcut-table">
+          <div class="sc-row"><span class="sc-key">0–9</span><span>Enter digits</span></div>
+          <div class="sc-row"><span class="sc-key">+ - * /</span><span>Arithmetic operators</span></div>
+          <div class="sc-row"><span class="sc-key">( )</span><span>Open / close parenthesis</span></div>
+          <div class="sc-row"><span class="sc-key">.</span><span>Decimal point</span></div>
+          <div class="sc-row"><span class="sc-key">Enter or =</span><span>Calculate result</span></div>
+          <div class="sc-row"><span class="sc-key">Backspace</span><span>Delete last character</span></div>
+          <div class="sc-row"><span class="sc-key">Escape</span><span>Clear everything (AC)</span></div>
+          <div class="sc-row"><span class="sc-key">^</span><span>Power operator</span></div>
+        </div>
+      </div>
+
+      <div class="help-footer">
+        <p>Developed by <strong>Sudeep Savita</strong> — Visit portfolio for more projects:</p>
+        <a href="http://sudeepsavita32.bsite.net" target="_blank" rel="noopener">🌐 sudeepsavita32.bsite.net</a>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="phone-scene">
+
+  <!-- Phone frame -->
+  <div class="phone-frame">
+
+    <!-- Notch -->
+    <div class="phone-notch">
+      <div class="notch-cam"></div>
+      <div class="notch-speaker"></div>
+    </div>
+
+    <!-- Screen -->
+    <div class="phone-screen">
+
+      <!-- Status bar — real time only -->
+      <div class="status-bar">
+        <span class="status-time">{{ currentTime }}</span>
+      </div>
+
+      <!-- App label -->
+      <div class="app-label">Scientific Calculator</div>
+
+      <!-- Display -->
+      <div class="display">
+        <div class="expr-line">{{ displayExpr }}</div>
+        <div class="result-line" [class.show]="result" [class.fmt-error]="isFormatError">{{ result || '&nbsp;' }}</div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-grid">
+        <button class="btn fn"    (click)="press('sin(')">sin</button>
+        <button class="btn fn"    (click)="press('cos(')">cos</button>
+        <button class="btn fn"    (click)="press('tan(')">tan</button>
+        <button class="btn fn"    (click)="press('log(')">log</button>
+
+        <button class="btn fn"    (click)="press('ln(')">ln</button>
+        <button class="btn fn"    (click)="press('sqrt(')">√</button>
+        <button class="btn fn"    (click)="press('^2')">x²</button>
+        <button class="btn fn"    (click)="press('^')">xʸ</button>
+
+        <button class="btn fn sm" (click)="press('pi')">π</button>
+        <button class="btn fn sm" (click)="press('e')">e</button>
+        <button class="btn fn sm" (click)="press('(')">(</button>
+        <button class="btn fn sm" (click)="press(')')">)</button>
+
+        <button class="btn clr"   (click)="clear()">AC</button>
+        <button class="btn back"  (click)="backspace()">⌫</button>
+        <button class="btn fn sm" (click)="press('!')">n!</button>
+        <button class="btn op"    (click)="press('/')">÷</button>
+
+        <button class="btn num"   (click)="press('7')">7</button>
+        <button class="btn num"   (click)="press('8')">8</button>
+        <button class="btn num"   (click)="press('9')">9</button>
+        <button class="btn op"    (click)="press('*')">×</button>
+
+        <button class="btn num"   (click)="press('4')">4</button>
+        <button class="btn num"   (click)="press('5')">5</button>
+        <button class="btn num"   (click)="press('6')">6</button>
+        <button class="btn op"    (click)="press('-')">−</button>
+
+        <button class="btn num"   (click)="press('1')">1</button>
+        <button class="btn num"   (click)="press('2')">2</button>
+        <button class="btn num"   (click)="press('3')">3</button>
+        <button class="btn op"    (click)="press('+')">+</button>
+
+        <button class="btn num wide" (click)="press('0')">0</button>
+        <button class="btn num"   (click)="press('.')">.</button>
+        <button class="btn eq"    (click)="calculate()">=</button>
+      </div>
+
+      <!-- Home indicator -->
+      <div class="home-indicator"></div>
+
+    </div><!-- /phone-screen -->
+  </div><!-- /phone-frame -->
+
+</div><!-- /phone-scene -->
+
+<!-- Credit — outside phone, centered below -->
+<div class="credit-bar">
+  <a href="http://sudeepsavita32.bsite.net" target="_blank" rel="noopener">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+  Created by <strong>Sudeep Savita</strong>
+  </a>
+
+</div>
